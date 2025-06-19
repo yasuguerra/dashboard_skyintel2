@@ -21,10 +21,10 @@ import {
   Cell,
 } from "recharts";
 import { Brain } from "lucide-react";
-import useFacebookData from "@/hooks/useFacebookData";
+import useFacebookData, { FacebookData } from "@/hooks/useFacebookData"; // Importar FacebookData
 
 const FacebookDashboard = () => {
-  const { data } = useFacebookData();
+  const { data }: { data: FacebookData | undefined } = useFacebookData(); // Tipar data explícitamente
 
   const engagementData = data?.engagementData ?? [];
   const audienceInsights = data?.audienceInsights ?? [];
@@ -86,3 +86,4 @@ const FacebookDashboard = () => {
 };
 
 export default FacebookDashboard;
+

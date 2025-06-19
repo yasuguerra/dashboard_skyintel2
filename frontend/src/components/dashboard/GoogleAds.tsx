@@ -21,10 +21,10 @@ import {
   Cell,
 } from "recharts";
 import { Brain } from "lucide-react";
-import useGoogleAdsData from "@/hooks/useGoogleAdsData";
+import useGoogleAdsData, { GoogleAdsData } from "@/hooks/useGoogleAdsData"; // Importar GoogleAdsData
 
 const GoogleAds = () => {
-  const { data } = useGoogleAdsData();
+  const { data }: { data: GoogleAdsData | undefined } = useGoogleAdsData(); // Tipar data explícitamente
 
   const campaignPerformance = data?.campaignPerformance ?? [];
   const dailySpend = data?.dailySpend ?? [];

@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 const API_URL = "http://localhost:8000";
 
+/** Ajusta los campos al JSON real que devuelve tu backend */
 export interface InstagramData {
   growthData: Array<{ week: string; followers: number; posts: number; engagement: number }>;
   contentPerformance: Array<{ type: string; posts: number; avgLikes: number; avgComments: number; avgViews: number }>;
@@ -10,13 +11,15 @@ export interface InstagramData {
   storyMetrics: Array<{ name: string; value: number; color: string }>;
 }
 
-export const useInstagramData = () =>
-  useQuery<InstagramData>([
-    "instagram-overview",
-  ], async () => {
-    const res = await fetch(`${API_URL}/instagram/overview`);
-    if (!res.ok) throw new Error("Failed to load Instagram data");
-    return res.json();
+/** Hook tipado: devuelve UseQueryResult<InstagramData, Error> */
+export default function useInstagramData(): UseQueryResult<InstagramData, Error> {
+  return useQuery<InstagramData, Error>({
+    queryKey: ["instagram-overview"],
+    queryFn: async () => {
+      const res = await fetch(`${API_URL}/instagram/overview`);
+      if (!res.ok) throw new Error("Failed to load Instagram data");
+      return res.json();
+    },
+    refetchInterval: 60 * 1000, // opcional
   });
-
-export default useInstagramData;
+}
