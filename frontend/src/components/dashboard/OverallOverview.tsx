@@ -1,5 +1,5 @@
 import React from 'react';
-import { useOverallOverviewData } from '@/hooks/useOverallOverviewData';
+import useOverallOverviewData, { OverallOverviewDataResponse } from '@/hooks/useOverallOverviewData';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react'; // Icono de carga

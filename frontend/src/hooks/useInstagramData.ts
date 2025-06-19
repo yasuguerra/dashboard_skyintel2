@@ -23,9 +23,9 @@ interface UseInstagramDataProps {
 }
 
 export const useInstagramData = ({ startDate, endDate }: UseInstagramDataProps = {}) =>
-  useQuery<InstagramDataResponse>(
-    ["instagram-overview", startDate, endDate], 
-    async () => {
+  useQuery<InstagramDataResponse, Error>({
+    queryKey: ["instagram-overview", startDate, endDate],
+    queryFn: async () => {
       const params = new URLSearchParams();
       if (startDate) params.append("startDate", startDate);
       if (endDate) params.append("endDate", endDate);
@@ -40,9 +40,7 @@ export const useInstagramData = ({ startDate, endDate }: UseInstagramDataProps =
       }
       return res.json();
     },
-    {
-      // staleTime: 1000 * 60 * 5, 
-    }
-  );
+    // staleTime: 1000 * 60 * 5,
+  });
 
 export default useInstagramData;

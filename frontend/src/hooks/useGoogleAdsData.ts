@@ -1,49 +1,80 @@
 import { useQuery } from "@tanstack/react-query";
 
-const API_URL = "http://localhost:8000"; // Asegúrate que este sea el puerto correcto de tu backend FastAPI
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// Esta interfaz representa los datos específicos para los gráficos
-export interface FacebookChartData {
-  engagementData: Array<{ date: string; reach: number; likes: number; comments: number; shares: number }>;
-  audienceInsights: Array<{ age: string; percentage: number; color: string }>; // Puede seguir siendo dummy si el backend no lo provee aún
-  topPosts: Array<{ type: string; content: string; reach: number; engagement: number; engagementRate: number }>;
-  contentTypes: Array<{ name: string; posts: number; engagement: number; color: string }>; // Puede seguir siendo dummy
+// Interfaces based on the dummy data structure in backend/fastapi_app.py
+interface CampaignPerformanceData {
+  campaign: string;
+  spend: number;
+  clicks: number;
+  conversions: number;
+  ctr: number;
+  cpc: number;
+  roas: number;
 }
 
-// Esta es la nueva interfaz para la respuesta completa del endpoint
-export interface FacebookDataResponse {
-  chartData: FacebookChartData;
+interface DailySpendData {
+  date: string;
+  spend: number;
+  clicks: number;
+  conversions: number;
+}
+
+interface KeywordPerformanceData {
+  keyword: string;
+  impressions: number;
+  clicks: number;
+  ctr: number;
+  cpc: number;
+  quality: number;
+}
+
+interface DevicePerformanceData {
+  name: string;
+  spend: number;
+  conversions: number;
+  color: string;
+}
+
+export interface GoogleAdsChartData {
+  campaignPerformance: CampaignPerformanceData[];
+  dailySpend: DailySpendData[];
+  keywordPerformance: KeywordPerformanceData[];
+  devicePerformance: DevicePerformanceData[];
+}
+
+export interface GoogleAdsDataResponse {
+  chartData: GoogleAdsChartData;
   aiInsight: string;
 }
 
-interface UseFacebookDataProps {
+interface UseGoogleAdsDataProps {
   startDate?: string;
   endDate?: string;
 }
 
-export const useFacebookData = ({ startDate, endDate }: UseFacebookDataProps = {}) =>
-  useQuery<FacebookDataResponse>(
-    ["facebook-overview", startDate, endDate], // Incluir fechas en la queryKey
-    async () => {
-      const params = new URLSearchParams();
-      if (startDate) params.append("startDate", startDate);
-      if (endDate) params.append("endDate", endDate);
-      
-      const queryString = params.toString();
-      const fetchURL = `${API_URL}/facebook/overview${queryString ? `?${queryString}` : ''}`;
-      
-      const res = await fetch(fetchURL);
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({ message: "Failed to load Facebook data and parse error" }));
-        throw new Error(errorData.detail || errorData.message || "Failed to load Facebook data");
-      }
-      return res.json();
-    },
-    {
-      // Opciones adicionales de React Query, como staleTime, cacheTime, etc.
-      // Por ejemplo, para evitar refetching demasiado frecuente:
-      // staleTime: 1000 * 60 * 5, // 5 minutos
-    }
-  );
+const fetchGoogleAdsData = async ({ startDate, endDate }: UseGoogleAdsDataProps): Promise<GoogleAdsDataResponse> => {
+  const params = new URLSearchParams();
+  if (startDate) params.append("startDate", startDate);
+  if (endDate) params.append("endDate", endDate);
 
-export default useFacebookData;
+  const queryString = params.toString();
+  const fetchURL = `${API_URL}/ads/overview${queryString ? `?${queryString}` : ''}`;
+
+  const res = await fetch(fetchURL);
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({ message: "Failed to load Google Ads data and parse error" }));
+    throw new Error(errorData.detail || errorData.message || "Failed to load Google Ads data");
+  }
+  return res.json();
+};
+
+export const useGoogleAdsData = ({ startDate, endDate }: UseGoogleAdsDataProps = {}) => {
+  return useQuery<GoogleAdsDataResponse, Error>({
+    queryKey: ["google-ads-overview", startDate, endDate],
+    queryFn: () => fetchGoogleAdsData({ startDate, endDate }),
+    // staleTime: 1000 * 60 * 5, // 5 minutos
+  });
+};
+
+export default useGoogleAdsData;

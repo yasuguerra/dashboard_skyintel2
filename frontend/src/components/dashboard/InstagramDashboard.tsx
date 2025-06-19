@@ -19,7 +19,7 @@ import {
   // PieChart, Pie, Cell, // Descomenta si los usas
 } from "recharts";
 import { Brain, Loader2, AlertTriangle } from "lucide-react";
-import { useInstagramData, InstagramDataResponse } from "@/hooks/useInstagramData";
+import useInstagramData, { InstagramDataResponse } from "@/hooks/useInstagramData";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface InstagramDashboardProps {

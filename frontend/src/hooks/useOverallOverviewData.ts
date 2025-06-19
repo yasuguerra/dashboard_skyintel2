@@ -28,9 +28,9 @@ interface UseOverallOverviewDataProps {
 }
 
 export const useOverallOverviewData = ({ startDate, endDate }: UseOverallOverviewDataProps = {}) =>
-  useQuery<OverallOverviewDataResponse>(
-    ["overall-overview", startDate, endDate], 
-    async () => {
+  useQuery<OverallOverviewDataResponse, Error>({
+    queryKey: ["overall-overview", startDate, endDate],
+    queryFn: async () => {
       const params = new URLSearchParams();
       if (startDate) params.append("startDate", startDate);
       if (endDate) params.append("endDate", endDate);
@@ -46,9 +46,7 @@ export const useOverallOverviewData = ({ startDate, endDate }: UseOverallOvervie
       }
       return res.json();
     },
-    {
-      // staleTime: 1000 * 60 * 5, 
-    }
-  );
+    // staleTime: 1000 * 60 * 5,
+  });
 
 export default useOverallOverviewData;

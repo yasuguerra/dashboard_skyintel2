@@ -19,7 +19,7 @@ import {
   PieChart, Pie, Cell,
 } from "recharts";
 import { Brain, Loader2, AlertTriangle } from "lucide-react";
-import { useGoogleAdsData, GoogleAdsDataResponse } from "@/hooks/useGoogleAdsData";
+import useGoogleAdsData, { GoogleAdsDataResponse } from "@/hooks/useGoogleAdsData";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface GoogleAdsProps {

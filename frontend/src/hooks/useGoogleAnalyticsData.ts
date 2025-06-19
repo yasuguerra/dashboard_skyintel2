@@ -22,9 +22,9 @@ interface UseGoogleAnalyticsDataProps {
 }
 
 export const useGoogleAnalyticsData = ({ startDate, endDate }: UseGoogleAnalyticsDataProps = {}) =>
-  useQuery<GoogleAnalyticsDataResponse>(
-    ["ga-overview", startDate, endDate], 
-    async () => {
+  useQuery<GoogleAnalyticsDataResponse, Error>({
+    queryKey: ["ga-overview", startDate, endDate],
+    queryFn: async () => {
       const params = new URLSearchParams();
       if (startDate) params.append("startDate", startDate);
       if (endDate) params.append("endDate", endDate);
@@ -39,9 +39,7 @@ export const useGoogleAnalyticsData = ({ startDate, endDate }: UseGoogleAnalytic
       }
       return res.json();
     },
-    {
-      // staleTime: 1000 * 60 * 5, 
-    }
-  );
+    // staleTime: 1000 * 60 * 5,
+  });
 
 export default useGoogleAnalyticsData;

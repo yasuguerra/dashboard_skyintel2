@@ -22,9 +22,9 @@ interface UseFacebookDataProps {
 }
 
 export const useFacebookData = ({ startDate, endDate }: UseFacebookDataProps = {}) =>
-  useQuery<FacebookDataResponse>(
-    ["facebook-overview", startDate, endDate], // Incluir fechas en la queryKey
-    async () => {
+  useQuery<FacebookDataResponse, Error>({
+    queryKey: ["facebook-overview", startDate, endDate], // Incluir fechas en la queryKey
+    queryFn: async () => {
       const params = new URLSearchParams();
       if (startDate) params.append("startDate", startDate);
       if (endDate) params.append("endDate", endDate);
@@ -39,11 +39,9 @@ export const useFacebookData = ({ startDate, endDate }: UseFacebookDataProps = {
       }
       return res.json();
     },
-    {
-      // Opciones adicionales de React Query, como staleTime, cacheTime, etc.
-      // Por ejemplo, para evitar refetching demasiado frecuente:
-      // staleTime: 1000 * 60 * 5, // 5 minutos
-    }
-  );
+    // Opciones adicionales de React Query, como staleTime, cacheTime, etc.
+    // Por ejemplo, para evitar refetching demasiado frecuente:
+    // staleTime: 1000 * 60 * 5, // 5 minutos
+  });
 
 export default useFacebookData;

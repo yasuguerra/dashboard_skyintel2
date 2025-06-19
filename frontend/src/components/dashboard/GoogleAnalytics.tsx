@@ -21,7 +21,7 @@ import {
   Cell,
 } from "recharts";
 import { Brain, Loader2, AlertTriangle } from "lucide-react";
-import { useGoogleAnalyticsData, GoogleAnalyticsDataResponse } from "@/hooks/useGoogleAnalyticsData";
+import useGoogleAnalyticsData, { GoogleAnalyticsDataResponse } from "@/hooks/useGoogleAnalyticsData";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface GoogleAnalyticsProps {
