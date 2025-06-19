@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pandas
+numpy
+dash
+dash-bootstrap-components
+plotly
+scikit-learn
+statsmodels
+openai
+requests
+python-dotenv
+google-analytics-data
+google-auth
+wordcloud
+pillow
